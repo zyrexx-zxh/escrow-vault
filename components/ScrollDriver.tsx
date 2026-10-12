@@ -6,14 +6,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollState } from '@/lib/scrollState';
 
 /**
- * Tweens scrollState.progress from 0 → 1 over the full page scroll.
- * `scrub` makes GSAP ease toward the scroll position, which gives the camera its silky feel.
+ * Maps page scroll to scrollState.progress (0 → 1). The 3D camera smooths it per frame,
+ * so no extra scrub smoothing is needed here.
  */
 export default function ScrollDriver() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    // The mobile address bar collapsing fires resize events; without this the page re-measures
+    // and the camera visibly jumps.
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
-    // gsap.context collects the tween + ScrollTrigger so one revert() cleans up both
     const ctx = gsap.context(() => {
       gsap.to(scrollState, {
         progress: 1,
@@ -22,15 +24,14 @@ export default function ScrollDriver() {
           trigger: document.body,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 0.9,
+          scrub: true,
           invalidateOnRefresh: true,
         },
       });
     });
 
-    // Page height changes as cards settle, so re-measure a little later and on load.
     const refresh = () => ScrollTrigger.refresh();
-    const timer = window.setTimeout(refresh, 600);
+    const timer = window.setTimeout(refresh, 800);
     window.addEventListener('load', refresh);
 
     return () => {

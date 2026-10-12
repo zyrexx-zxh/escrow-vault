@@ -17,12 +17,12 @@ export default function Hero() {
       className="relative flex min-h-[100svh] items-end px-6 pb-28 pt-28 sm:px-10 lg:items-center lg:px-16 lg:pb-24"
     >
       <motion.div style={{ y, opacity }} className="mx-auto w-full max-w-7xl">
-        <div className="mx-auto max-w-2xl animate-float text-center lg:mx-0 lg:text-left">
+        <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-            className="glass mb-7 inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-medium tracking-wide text-white/80"
+            className="glass-lite mb-7 inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-medium tracking-wide text-white/80"
           >
             <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-emerald-400" />
             Middleman directory
@@ -67,7 +67,7 @@ export default function Hero() {
             </a>
             <a
               href="#how"
-              className="glass rounded-full px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
+              className="glass-lite rounded-full px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
             >
               How it works
             </a>

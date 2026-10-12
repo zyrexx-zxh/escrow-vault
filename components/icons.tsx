@@ -19,20 +19,20 @@ export function ArrowRight({ className }: IconProps) {
   );
 }
 
+export function ArrowLeft({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M19 12H5" />
+      <path d="m12 19-7-7 7-7" />
+    </svg>
+  );
+}
+
 export function Send({ className }: IconProps) {
   return (
     <svg {...base} className={className}>
       <path d="m22 2-7 20-4-9-9-4Z" />
       <path d="M22 2 11 13" />
-    </svg>
-  );
-}
-
-export function Search({ className }: IconProps) {
-  return (
-    <svg {...base} className={className}>
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }

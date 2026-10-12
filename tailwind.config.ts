@@ -26,10 +26,6 @@ const config: Config = {
         mono: ['ui-monospace', '"SF Mono"', 'Menlo', 'Consolas', 'monospace'],
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
         pulseDot: {
           '0%': { boxShadow: '0 0 0 0 rgba(16,242,165,0.55)' },
           '70%': { boxShadow: '0 0 0 10px rgba(16,242,165,0)' },
@@ -39,11 +35,15 @@ const config: Config = {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(250%)' },
         },
+        nudge: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(6px)' },
+        },
       },
       animation: {
-        float: 'float 7s ease-in-out infinite',
         'pulse-dot': 'pulseDot 2.2s ease-out infinite',
         'scroll-hint': 'scrollHint 2s cubic-bezier(0.65, 0, 0.35, 1) infinite',
+        nudge: 'nudge 1.4s ease-in-out infinite',
       },
     },
   },

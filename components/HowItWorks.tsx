@@ -47,7 +47,7 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '0px 0px -10% 0px' }}
               transition={{ duration: 0.9, ease: EASE, delay: i * 0.1 }}
-              className="glass gradient-border rounded-3xl p-7"
+              className="glass-lite gradient-border rounded-3xl p-7"
             >
               <span className="font-mono text-sm text-emerald-300/80">{step.n}</span>
               <h3 className="mt-6 text-xl font-semibold text-white">{step.title}</h3>

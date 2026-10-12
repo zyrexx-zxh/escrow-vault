@@ -1,6 +1,6 @@
 # Escrow Vault — immersive 3D middleman directory
 
-Next.js 14 (App Router) · Tailwind CSS · React Three Fiber + drei + postprocessing · GSAP ScrollTrigger · Framer Motion
+Next.js 14 (App Router) · Tailwind CSS · React Three Fiber · GSAP ScrollTrigger · Framer Motion
 
 ## Run it
 
@@ -9,26 +9,35 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Production build: `npm run build && npm start`
+Production build: `npm run build && npm start` (Node 18.17+, 20+ recommended).
 
-Requires Node 18.17+ (Node 20+ recommended).
+## Profile photos
+
+Drop the photos into `public/middlemen/`, named after the middleman's **name** in lower-case:
+`fame.jpg`, `beam.jpg`, `top.jpg`, `scholar.jpg` … (see `public/middlemen/README.txt` for the full list).
+`.jpg` is tried first, then `.jpeg`, `.png`, `.webp`. A missing file shows a tinted placeholder.
 
 ## What's inside
 
 | Path | What it does |
 | --- | --- |
-| `components/Scene.tsx` | Fixed full-screen R3F canvas: dark-metal vault, glowing rings, procedural studio lighting, bloom, and the scroll-driven camera path |
-| `components/ScrollDriver.tsx` | GSAP ScrollTrigger writes page scroll progress (0 → 1) that the camera rig reads each frame |
-| `components/Hero.tsx` | "Secure Digital Escrow" hero + "Browse verified middlemen." |
-| `components/MiddlemanCard.tsx` | Glass card with 3D hover tilt, gradient border, stats grid, and the `t.me` contact button |
-| `components/Directory.tsx` | Grid, search, sort and the stats strip |
+| `components/Scene.tsx` | Light R3F scene: dark-metal vault, two rings, glow, dust. Camera orbits on scroll. Auto-lowers quality on slow devices |
+| `components/ScrollDriver.tsx` | GSAP ScrollTrigger writes page scroll progress for the camera |
+| `components/Deck.tsx` | The swipe deck: drag / swipe / arrow keys / buttons / trackpad / quick-jump rail |
+| `components/MiddlemanCard.tsx` | One card. Position, tilt, scale and fade are all derived from the deck position |
+| `components/Directory.tsx` | Section header, stats, deck, safety note |
 | `components/Footer.tsx` | "Designed By @claxen" → https://t.me/claxen |
-| `data/middlemen.ts` | The middleman JSON — edit here to add or change entries |
-| `app/globals.css` | Glassmorphism, gradient borders, glare and button styles |
+| `data/middlemen.ts` | The middleman data — edit here |
+| `lib/deck.ts` | Deck maths (loop wrap, drag distance per card) |
 
-## Customising
+## Tuning the deck feel
 
-- **Profile photos:** the avatar in `MiddlemanCard.tsx` is a placeholder. Replace the `<User />` icon with an `<img>`/`next/image`.
-- **Camera path:** edit the `CAM_PATH` points in `Scene.tsx`.
-- **Colours:** emerald/blue glows are `EMERALD` / `BLUE` in `Scene.tsx` and the `rgba(16, 242, 165, …)` values in `globals.css`.
-- **Performance on weak devices:** lower `dpr` on the `<Canvas>`, reduce `Sparkles` counts, or remove `<Bloom>`.
+- `PX` in `lib/deck.ts`: drag distance per card (smaller = more sensitive).
+- `stiffness` / `damping` in `Deck.tsx` `goTo`: spring bounciness.
+- The per-card `useTransform` lines in `MiddlemanCard.tsx` control the stack look and the fly-away motion.
+
+## Performance notes
+
+- Heavy backdrop blur is only used on the nav and on each card's info panel (over the photo), not over the live 3D canvas.
+- No post-processing; the 3D bundle loads after the page has painted.
+- On low-end devices the scene drops its pixel ratio and particles automatically.
