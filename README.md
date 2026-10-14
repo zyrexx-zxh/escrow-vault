@@ -1,43 +1,48 @@
-# Escrow Vault — immersive 3D middleman directory
+# Escrow Vault
 
-Next.js 14 (App Router) · Tailwind CSS · React Three Fiber · GSAP ScrollTrigger · Framer Motion
+A single-page escrow middleman directory. Next.js 14 (App Router) + TypeScript, styled with one plain stylesheet.
+
+- Hero: **Secure Digital Escrow**, "Browse verified middlemen."
+- 19 middlemen in a swipeable 3D card deck (`data/middlemen.ts`, unchanged)
+- Contact buttons are real links to `https://t.me/<username>`
+- Footer: **Designed By @claxen** links to `https://t.me/claxen`
 
 ## Run it
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Production build: `npm run build && npm start` (Node 18.17+, 20+ recommended).
+Render: Build `npm install && npm run build`, Start `npm start`.
 
 ## Profile photos
 
-Drop the photos into `public/middlemen/`, named after the middleman's **name** in lower-case:
-`fame.jpg`, `beam.jpg`, `top.jpg`, `scholar.jpg` … (see `public/middlemen/README.txt` for the full list).
-`.jpg` is tried first, then `.jpeg`, `.png`, `.webp`. A missing file shows a tinted placeholder.
+Put one image per middleman in `public/middlemen/`, named after the **name** (lowercase), not the Telegram username:
 
-## What's inside
+`fame.jpg`, `top.jpg`, `cry.jpg`, `ja.jpg`, `shib.jpg`, `scholar.jpg` ...
 
-| Path | What it does |
+`.jpg`, `.jpeg`, `.png` and `.webp` are all tried, in that order. If none exist the card shows a tinted placeholder with the initial. The full list of names is in `public/middlemen/README.txt`.
+
+## What is where
+
+| File | What it does |
 | --- | --- |
-| `components/Scene.tsx` | Light R3F scene: dark-metal vault, two rings, glow, dust. Camera orbits on scroll. Auto-lowers quality on slow devices |
-| `components/ScrollDriver.tsx` | GSAP ScrollTrigger writes page scroll progress for the camera |
-| `components/Deck.tsx` | The swipe deck: drag / swipe / arrow keys / buttons / trackpad / quick-jump rail |
-| `components/MiddlemanCard.tsx` | One card. Position, tilt, scale and fade are all derived from the deck position |
-| `components/Directory.tsx` | Section header, stats, deck, safety note |
-| `components/Footer.tsx` | "Designed By @claxen" → https://t.me/claxen |
-| `data/middlemen.ts` | The middleman data — edit here |
-| `lib/deck.ts` | Deck maths (loop wrap, drag distance per card) |
+| `app/page.tsx` | Page order: Loader, Nav, Hero, Ribbon, Directory, How it works, Safety, Finale, Footer |
+| `app/globals.css` | All styling (Tailwind is only kept for its reset and future utility classes) |
+| `lib/swipeEngine.ts` | The card swipe: one position number, spring physics, rubber-band ends, no looping |
+| `lib/scroll.ts` | Shared scroll listener that writes progress into CSS variables |
+| `components/Deck.tsx` | Connects the engine to the counter, ghost name, ticks, buttons, tilt and the "choose" effect |
+| `components/MiddlemanCard.tsx` | One card |
+| `components/Loader.tsx` | 3D vault-door intro |
+| `components/HowItWorks.tsx`, `Safety.tsx` | Steps and the five safety checks (editable text at the top of each file) |
+| `components/Footer.tsx` | Fixed footer revealed as the page scrolls away |
 
-## Tuning the deck feel
+## Motion
 
-- `PX` in `lib/deck.ts`: drag distance per card (smaller = more sensitive).
-- `stiffness` / `damping` in `Deck.tsx` `goTo`: spring bounciness.
-- The per-card `useTransform` lines in `MiddlemanCard.tsx` control the stack look and the fly-away motion.
+Loader (3D door split), hero (CSS 3D cards that follow the pointer), scroll reveals and a marquee, card tilt and glare, the cover-flow swipe, a "Locked in" moment when you press Contact, rings that turn with scroll, and a footer that is uncovered like a curtain. Everything animates transform/opacity only. There is no WebGL and no blur, and `prefers-reduced-motion` turns the motion off.
 
-## Performance notes
+## Notes
 
-- Heavy backdrop blur is only used on the nav and on each card's info panel (over the photo), not over the live 3D canvas.
-- No post-processing; the 3D bundle loads after the page has painted.
-- On low-end devices the scene drops its pixel ratio and particles automatically.
+The site is not affiliated with OGUsers or Telegram (the footer says so). Vouch counts come from `data/middlemen.ts`.
